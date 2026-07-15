@@ -3,6 +3,7 @@
 int main(void)
 {
     int choice;
+    int a, b;
 
     do
     {
@@ -16,9 +17,15 @@ int main(void)
 
         scanf("%d", &choice);
 
-        if (choice >= 1 && choice <= 4)
+        if (choice == 1)
         {
-            /* سيتم إضافة العمليات في المهام القادمة */
+            printf("A: ");
+            scanf("%d", &a);
+
+            printf("B: ");
+            scanf("%d", &b);
+
+            printf("Result: %d\n", a + b);
         }
         else if (choice == 0)
         {
