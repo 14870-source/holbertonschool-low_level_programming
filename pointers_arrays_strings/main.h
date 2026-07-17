@@ -18,5 +18,6 @@ char *_strncat(char *dest, char *src, int n);
 char *_strncpy(char *dest, char *src, int n);
 char *leet(char *str);
 char *_memset(char *s, char b, unsigned int n);
+char *_strchr(char *s, char c);
 
 #endif
