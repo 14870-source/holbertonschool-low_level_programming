@@ -1,49 +1,32 @@
-#include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef MAIN_H
+#define MAIN_H
 
-/**
- * simple_print_buffer - prints buffer in hexa
- * @buffer: the address of memory to print
- * @size: the size of the memory to print
- *
- * Return: Nothing.
- */
-void simple_print_buffer(char *buffer, unsigned int size)
-{
-	unsigned int i;
+char *create_array(unsigned int size, char c);
+int _putchar(char c);
 
-	i = 0;
-	while (i < size)
-	{
-		if (i % 10)
-			printf(" ");
-		if (!(i % 10) && i)
-			printf("\n");
-		printf("0x%02x", buffer[i]);
-		i++;
-	}
-	printf("\n");
-}
+int _putchar(char c);
+void reset_to_98(int *n);
+void swap_int(int *a, int *b);
+int _strlen(char *s);
+void _puts(char *str);
+void print_rev(char *s);
+void rev_string(char *s);
+void puts2(char *str);
+void puts_half(char *str);
+void print_array(int *a, int n);
+char *_strcpy(char *dest, char *src);
+int _atoi(char *s);
+char *_strcat(char *dest, char *src);
+char *_strncat(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, int n);
+char *leet(char *str);
+char *_memset(char *s, char b, unsigned int n);
+char *_strchr(char *s, char c);
+unsigned int _strspn(char *s, char *accept);
+char *_strpbrk(char *s, char *accept);
+char *_strstr(char *haystack, char *needle);
+void print_chessboard(char (*a)[8]);
+void print_diagsums(int *a, int size);
+char *create_array(unsigned int size, char c);
 
-/**
- * main - check the code
- *
- * Return: Always 0.
- */
-int main(void)
-{
-	char *buffer;
-
-	buffer = create_array(98, 'H');
-	if (buffer == NULL)
-	{
-		printf("failed to allocate memory\n");
-		return (1);
-	}
-
-	simple_print_buffer(buffer, 98);
-	free(buffer);
-
-	return (0);
-}
+#endif
