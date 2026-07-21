@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdlib.h>
 int main(int argc, char *argv[])
 {
 	int len1, len2, *result;
@@ -35,10 +36,7 @@ int main(int argc, char *argv[])
 	free(result);
 
 	return (0);
-}
-
-#include <stdlib.h>
-
+} 
 /**
  * _isdigit - checks if a string contains only digits
  * @s: string
