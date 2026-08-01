@@ -26,35 +26,15 @@ int main(int argc, char *argv[])
 		return (0);
 	}
 
-	while (cents >= 25)
-	{
-		coins++;
-		cents -= 25;
-	}
-
-	while (cents >= 10)
-	{
-		coins++;
-		cents -= 10;
-	}
-
-	while (cents >= 5)
-	{
-		coins++;
-		cents -= 5;
-	}
-
-	while (cents >= 2)
-	{
-		coins++;
-		cents -= 2;
-	}
-
-	while (cents >= 1)
-	{
-		coins++;
-		cents--;
-	}
+	coins += cents / 25;
+	cents %= 25;
+	coins += cents / 10;
+	cents %= 10;
+	coins += cents / 5;
+	cents %= 5;
+	coins += cents / 2;
+	cents %= 2;
+	coins += cents;
 
 	printf("%d\n", coins);
 
