@@ -26,3 +26,4 @@ This project is about hash tables and hash functions in C.
 - Betty coding style
 - Compilation flags:
   `-Wall -Werror -Wextra -pedantic -std=gnu89`
+  
