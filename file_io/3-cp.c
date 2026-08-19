@@ -4,34 +4,32 @@
 #include <stdio.h>
 
 /**
- * copy_file - copies the content of one file to another
- * @fd_from: source file descriptor
- * @fd_to: destination file descriptor
- * @file_to: destination file name
+ * copy_file - copies content from one file to another
+ * @from: source file descriptor
+ * @to: destination file descriptor
+ * @name: destination file name
  * Return: 0 on success, 98 or 99 on failure
  */
-int copy_file(int fd_from, int fd_to, char *file_to)
+int copy_file(int from, int to, char *name)
 {
 	char buffer[1024];
-	ssize_t read_bytes;
-	ssize_t write_bytes;
+	ssize_t r, w;
 
-	while ((read_bytes = read(fd_from, buffer, 1024)) > 0)
+	while ((r = read(from, buffer, 1024)) > 0)
 	{
-		write_bytes = write(fd_to, buffer, read_bytes);
-
-		if (write_bytes != read_bytes)
+		w = write(to, buffer, r);
+		if (w != r)
 		{
 			dprintf(STDERR_FILENO,
-				"Error: Can't write to %s\n", file_to);
+				"Error: Can't write to %s\n", name);
 			return (99);
 		}
 	}
 
-	if (read_bytes == -1)
+	if (r == -1)
 	{
 		dprintf(STDERR_FILENO,
-			"Error: Can't read from file %s\n", file_to);
+			"Error: Can't read from file %s\n", name);
 		return (98);
 	}
 
@@ -56,16 +54,48 @@ int close_file(int fd)
 }
 
 /**
- * main - copies the content of one file to another
+ * open_source - opens the source file
+ * @name: source file name
+ * Return: file descriptor or -1
+ */
+int open_source(char *name)
+{
+	int fd;
+
+	fd = open(name, O_RDONLY);
+	if (fd == -1)
+		dprintf(STDERR_FILENO,
+			"Error: Can't read from file %s\n", name);
+
+	return (fd);
+}
+
+/**
+ * open_destination - opens the destination file
+ * @name: destination file name
+ * Return: file descriptor or -1
+ */
+int open_destination(char *name)
+{
+	int fd;
+
+	fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	if (fd == -1)
+		dprintf(STDERR_FILENO,
+			"Error: Can't write to %s\n", name);
+
+	return (fd);
+}
+
+/**
+ * main - copies a file to another file
  * @ac: number of arguments
  * @av: arguments
  * Return: 0 on success
  */
 int main(int ac, char **av)
 {
-	int fd_from;
-	int fd_to;
-	int result;
+	int from, to, result;
 
 	if (ac != 3)
 	{
@@ -74,41 +104,31 @@ int main(int ac, char **av)
 		return (97);
 	}
 
-	fd_from = open(av[1], O_RDONLY);
-	if (fd_from == -1)
-	{
-		dprintf(STDERR_FILENO,
-			"Error: Can't read from file %s\n", av[1]);
+	from = open_source(av[1]);
+	if (from == -1)
 		return (98);
-	}
 
-	fd_to = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (fd_to == -1)
+	to = open_destination(av[2]);
+	if (to == -1)
 	{
-		dprintf(STDERR_FILENO,
-			"Error: Can't write to %s\n", av[2]);
-		close(fd_from);
+		close(from);
 		return (99);
 	}
 
-	result = copy_file(fd_from, fd_to, av[2]);
+	result = copy_file(from, to, av[2]);
 	if (result != 0)
 	{
-		close(fd_from);
-		close(fd_to);
+		close(from);
+		close(to);
 		return (result);
 	}
 
-	result = close_file(fd_from);
+	result = close_file(from);
 	if (result != 0)
 	{
-		close(fd_to);
+		close(to);
 		return (result);
 	}
 
-	result = close_file(fd_to);
-	if (result != 0)
-		return (result);
-
-	return (0);
+	return (close_file(to));
 }
